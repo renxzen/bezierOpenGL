@@ -1,0 +1,28 @@
+{
+    "configurations": [
+        {
+            "name": "Win64",
+            "includePath": [
+				"${workspaceRoot}/dependencies/include",
+				"${workspaceRoot}/source"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "browse": {
+                "path": [
+					"${workspaceRoot}/dependencies/libraries",
+					"${workspaceRoot}/source"
+				]
+            },
+            //"windowsSdkVersion": "10.0.17763.0",
+            "compilerPath": "C:/mingw64/bin/g++.exe",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "gcc-x64"
+        }
+    ],
+    "version": 4
+}

@@ -1,0 +1,45 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build",
+            "type": "shell",
+            "command": "g++",
+            "windows": {
+                "args": [
+					"${workspaceRoot}/source/main.cpp",
+					"-g",
+					"--std=c++17",
+
+					 // Incluir el .cpp de los .h aqui
+                    //"${workspaceRoot}/source/shader.cpp",
+
+					// Incluir glad.c
+                    "${workspaceRoot}/dependencies/gladSource/glad.c",
+
+					// Carpetas Include
+					"-I${workspaceRoot}/dependencies/include",
+					
+					// Carpetas Libraries
+					"-L${workspaceRoot}/dependencies/libraries",
+					
+					// DLL usados
+					"-lopengl32",
+					"-lglfw3dll",
+					"-lassimp.dll",
+
+					// Output
+					"-static",
+                    "-o",
+                    "${workspaceRoot}/builds/main"
+                ]
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}

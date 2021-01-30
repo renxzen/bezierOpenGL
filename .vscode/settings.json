@@ -1,0 +1,20 @@
+{
+    "files.associations": {
+		"*.rmd": "markdown",
+		"*.tcc": "cpp",
+		"new": "cpp",
+		"typeinfo": "cpp",
+		"array": "cpp",
+		"string_view": "cpp",
+		"initializer_list": "cpp",
+		"utility": "cpp",
+		"deque": "cpp",
+		"string": "cpp",
+		"unordered_map": "cpp",
+		"vector": "cpp",
+		"iostream": "cpp",
+		"ostream": "cpp",
+		"list": "cpp",
+		"cmath": "cpp"
+	}
+}

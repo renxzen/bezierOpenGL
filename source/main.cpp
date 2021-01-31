@@ -9,24 +9,21 @@ int main(){
 
 	Shader programa("GLSL/code.vs","GLSL/code.fs");
 
-	Curves* curvas = new Curves();
-	ventana.curvas = curvas;
+	// Inicializar las curvas luego de la definicion del shader
+	ventana.curvas = new Curves();
 
-	
-	// render loop
+	// Loop Render
 	while (!ventana.isClosed()){
 		ventana.startLoop(0.4, 0.1, 0.2, 1.0);
 
-		// draw our first triangle
+		// Dibujar las curvas
 		programa.usar();
+		ventana.curvas->draw(programa);
 
-		curvas->draw(programa);
- 
-		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		ventana.endLoop();
 	}
 
-	// glfw: terminate, clearing all previously allocated GLFW resources.
+	// glfw: Terminar
 	glfwTerminate();
 	return 0;
 }

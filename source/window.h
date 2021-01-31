@@ -22,11 +22,13 @@ public:
 	
 	// Curvas de Bezier
 	Curves* curvas = nullptr;
+	bool limpiarCurvas = false;
 
 	//------------------------------------------------------------------------
 	// Constructor
 	Window(string tittle, unsigned int width = 800, unsigned int height = 600) : titulo(tittle), width(width), height(height) {
 		camara = new Camera(glm::vec3(0.0, 0.0, 3.0));
+		//curvas = new Curves();
 
 		// Cambiar los valores de camara con las dimensiones de la ventana
 		camara->lastX = width / 2.0;
@@ -160,6 +162,14 @@ public:
 		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) camara->procesarTeclado(DERECHA);
 		if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) camara->procesarTeclado(ARRIBA);
 		if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) camara->procesarTeclado(ABAJO);
+
+		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS && !limpiarCurvas) {
+			limpiarCurvas ^= 1;
+			curvas->curvesVec.clear();
+			curvas->curvesVec.push_back(Curve());
+		}
+		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_RELEASE && limpiarCurvas) limpiarCurvas ^= 1;
+
 	}
 
 	//------------------------------------------------------------------------

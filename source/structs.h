@@ -54,6 +54,11 @@ struct Curve {
 	vector<float> bezier;
 	unsigned int bVBO, bVAO;
 
+	float sizePoint = 7.0, sizeLine = 1.5, sizeBezier = 1.5;
+	glm::vec3 colorPoint = glm::vec3(1.0, 0.5, 0.2);
+	glm::vec3 colorLine = glm::vec3(1.0, 1.0, 1.0);
+	glm::vec3 colorBezier = glm::vec3(0.0, 0.0, 1.0);
+
 	// Constructor & Destructor
 	Curve() {}
 	~Curve() {
@@ -113,14 +118,14 @@ struct Curve {
 			glBindVertexArray(VAO);
 
 			// Dibujar los puntos
-			shader.setVec3("colorize", glm::vec3(1.0, 0.5, 0.2));
-			glPointSize(5);
+			shader.setVec3("colorize", colorPoint);
+			glPointSize(sizePoint);
 			glDrawArrays(GL_POINTS, 0, coordinates.size()/3);
 			
 			// Dibujar las lineas
 			if (points.size() >= 2) {
-				shader.setVec3("colorize", glm::vec3(1.0, 1.0, 1.0));
-				glLineWidth(1.35);
+				shader.setVec3("colorize", colorLine);
+				glLineWidth(sizeLine);
 				glDrawArrays(GL_LINE_STRIP, 0, coordinates.size()/3);
 			}
 
@@ -150,8 +155,8 @@ struct Curve {
 			glBindVertexArray(bVAO);
 
 			// Dibujar la linea de bezier
-			shader.setVec3("colorize", glm::vec3(0.0, 0.0, 1.0));
-			glLineWidth(1.35);
+			shader.setVec3("colorize", colorBezier);
+			glLineWidth(sizeBezier);
 			glDrawArrays(GL_LINE_STRIP, 0, bezier.size()/3);
 			
 			// Desenlazar a default

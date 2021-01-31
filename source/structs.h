@@ -6,19 +6,19 @@
 using namespace std;
 
 struct Factorials {
-	long long array[20] = {1}; // factorials[0] = 1 
+	long long facto[20] = {1}; // factorials[0] = 1 
+
 	Factorials() {
-		for (int i = 1; i <= 20; i++) array[i] = i * array[i-1];
+		for (int i = 1; i <= 20; i++) facto[i] = i * facto[i-1];
 	}
 
 	long long factorial(int n){
-		return array[n];
+		return facto[n];
 	}
 
 	long long binomial(int n, int m) {
-		return array[n]/(array[m]*array[n-m]);
+		return facto[n]/(facto[m]*facto[n-m]);
 	}
-
 };
 
 struct Point {

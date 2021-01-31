@@ -16,7 +16,6 @@ struct Curves {
 	// Functions
 	void addPointToCurrentCurve(float x, float y){
 		curvesVec[curvesVec.size()-1].addPoint(x, y);
-		cout << "point added in " << x << "," << y << endl;
 	}
 
 	void addCurve(){

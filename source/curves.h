@@ -11,7 +11,7 @@ struct Curves {
 	Curves() {
 		curvesVec.push_back(Curve());
 	}
-	~Curves() {}
+	~Curves() { }
 
 	// Functions
 	void addPointToCurrentCurve(float x, float y){
@@ -25,13 +25,9 @@ struct Curves {
 
 	void draw(Shader &shader){
 		for (int i=0; i < curvesVec.size(); i++) {
-			curvesVec[i].updateBezier(fact);
+			if (curvesVec[i].points.size() > 2) curvesVec[i].updateBezier(fact);
 			curvesVec[i].draw(shader);
 		}
-	}
-
-	void deallocate() {
-		for (int i=0; i < curvesVec.size(); i++) curvesVec[i].deallocate();
 	}
 
 };

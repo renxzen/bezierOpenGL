@@ -37,7 +37,6 @@ public:
 	~Window() {
 		camara = nullptr; delete camara;
 		curvas = nullptr; delete curvas;
-		//window = nullptr; delete window;
 	};
 
 	//------------------------------------------------------------------------
@@ -62,14 +61,14 @@ public:
 		glfwSetWindowUserPointer(window, reinterpret_cast<void*>(this));
 
 		// Definicion de lambdas para utilizar las funciones de clase en las funciones callback
-		auto framebuffer = [](GLFWwindow* window, int ancho, int alto) {
+		auto resizingWindow = [](GLFWwindow* window, int ancho, int alto) {
 			static_cast<Window*>(glfwGetWindowUserPointer(window))->framebufferSizeCallback(window, ancho, alto);
 		};
 		auto mouseMovement = [](GLFWwindow* window, double xpos, double ypos) {
-			static_cast<Window*>(glfwGetWindowUserPointer(window))->mouseCallback(window, xpos, ypos);
+			static_cast<Window*>(glfwGetWindowUserPointer(window))->mouseMovementCallback(window, xpos, ypos);
 		};
 		auto mouseScroll = [](GLFWwindow* window, double xoffset, double yoffset) {
-			static_cast<Window*>(glfwGetWindowUserPointer(window))->scrollCallback(window, xoffset, yoffset);
+			static_cast<Window*>(glfwGetWindowUserPointer(window))->mouseScrollCallback(window, xoffset, yoffset);
 		};
 
 		auto mouseButton = [](GLFWwindow* window, int button, int action, int mods) {
@@ -77,19 +76,17 @@ public:
 		};
 
 
-
 		// GLFW Callbacks
-		glfwSetFramebufferSizeCallback(window, framebuffer); // resizing window
+		glfwSetFramebufferSizeCallback(window, resizingWindow); // resizing window
+
 		glfwSetCursorPosCallback(window, mouseMovement); // mouseMovement
-		glfwSetInputMode(window, GLFW_CURSOR,GLFW_CURSOR_NORMAL);
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL); // GLFW_CURSOR_DISABLED Para que GLFW capture el mouse
 
 		glfwSetScrollCallback(window, mouseScroll); // mouseScroll
 
 		glfwSetMouseButtonCallback(window, mouseButton); //mouseButton
-		glfwSetInputMode(window, GLFW_STICKY_MOUSE_BUTTONS,1);
+		glfwSetInputMode(window, GLFW_STICKY_MOUSE_BUTTONS, 1);
 
-		// Para que GLFW capture el mouse
-		//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 		//Cargar Glad
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
@@ -163,18 +160,18 @@ public:
 		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) camara->procesarTeclado(DERECHA);
 		if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) camara->procesarTeclado(ARRIBA);
 		if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) camara->procesarTeclado(ABAJO);
-
 	}
 
 	//------------------------------------------------------------------------
 	// Definiendo las funciones glfw callback
+	
 	// glfw: cuando el tamaño de la ventana es cambiado
 	void framebufferSizeCallback(GLFWwindow* window, int ancho, int alto) {
 		glViewport(0, 0, ancho, alto);
 	}
 
 	// glfw: cuando el mouse se mueve
-	void mouseCallback(GLFWwindow* window, double xpos, double ypos) {
+	void mouseMovementCallback(GLFWwindow* window, double xpos, double ypos) {
 		if (camara->primerMouse) {
 			camara->lastX = xpos;
 			camara->lastY = ypos;
@@ -187,6 +184,7 @@ public:
 		camara->procesarMovMouse(xoffset, yoffset);
 	}
 
+	// glfw: cuando los botones del mouse son presionados
 	void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
 		// Generar puntos
 		if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
@@ -198,7 +196,7 @@ public:
 	}
 
 	// glfw: cuando la rueda del mouse se mueve
-	void scrollCallback(GLFWwindow* window, double xoffset, double yoffset) {
+	void mouseScrollCallback(GLFWwindow* window, double xoffset, double yoffset) {
 		camara->procesarRuedaMouse(yoffset);
 	}
 };

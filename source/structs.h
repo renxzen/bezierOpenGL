@@ -1,14 +1,7 @@
 #pragma once
 
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-
 #include "shader.h"
-
 #include <vector>
-#include <iostream>
-#include <math.h>
 
 using namespace std;
 
@@ -22,7 +15,7 @@ struct Factorials {
 		return array[n];
 	}
 
-	int binomial(int n, int m) {
+	long long binomial(int n, int m) {
 		return array[n]/(array[m]*array[n-m]);
 	}
 
@@ -63,7 +56,13 @@ struct Curve {
 
 	// Constructor & Destructor
 	Curve() {}
-	~Curve() {}
+	~Curve() {
+		glDeleteVertexArrays(1, &VAO);
+    	glDeleteBuffers(1, &VBO);
+
+		glDeleteVertexArrays(1, &bVAO);
+    	glDeleteBuffers(1, &bVBO);
+	}
 
 	// Functions
 
@@ -73,7 +72,7 @@ struct Curve {
 		coordinates.push_back(z);
 		points.push_back(Point(x,y,z));
 	}
-
+	
 	void updateBezier(Factorials &fact){
 		if (points.size() >= 2){
 			bezier.clear();
@@ -90,10 +89,11 @@ struct Curve {
 			}
 		}
 	}
+	
 
 	void draw(Shader &shader) {	
 		// Dibujar los puntos
-		if (points.size() >= 1) {
+		if (points.size() > 0) {
 			// Establecer el arreglo y el bufer de vertices
 			glGenVertexArrays(1, &VAO);
 			glGenBuffers(1, &VBO);
@@ -113,24 +113,24 @@ struct Curve {
 			glBindVertexArray(VAO);
 
 			// Dibujar los puntos
-			shader.setVec3("color", glm::vec3(1.0, 0.5, 0.2));
+			shader.setVec3("colorize", glm::vec3(1.0, 0.5, 0.2));
 			glPointSize(5);
 			glDrawArrays(GL_POINTS, 0, coordinates.size()/3);
+			
+			// Dibujar las lineas
+			if (points.size() >= 2) {
+				shader.setVec3("colorize", glm::vec3(1.0, 1.0, 1.0));
+				glLineWidth(1.35);
+				glDrawArrays(GL_LINE_STRIP, 0, coordinates.size()/3);
+			}
+
+			// Desenlazar a default
+			glBindVertexArray(0);
 		}
 		
-		// Dibujar las lineas
-		if (points.size() >= 2) {
-			// Dibujar las lineas
-			shader.setVec3("color", glm::vec3(1.0, 1.0, 1.0));
-			glLineWidth(1.35);
-			glDrawArrays(GL_LINE_STRIP, 0, coordinates.size()/3);
-		}
-
-		// Desenlazar a default
-		glBindVertexArray(0);
-
+		
 		// Dibujar las Bezier
-		if (points.size() >= 3) {
+		if (points.size() > 2) {
 			// Establecer el arreglo y el bufer de vertices
 			glGenVertexArrays(1, &bVAO);
 			glGenBuffers(1, &bVBO);
@@ -150,22 +150,14 @@ struct Curve {
 			glBindVertexArray(bVAO);
 
 			// Dibujar la linea de bezier
-			shader.setVec3("color", glm::vec3(0.0, 0.0, 1.0));
+			shader.setVec3("colorize", glm::vec3(0.0, 0.0, 1.0));
 			glLineWidth(1.35);
 			glDrawArrays(GL_LINE_STRIP, 0, bezier.size()/3);
 			
 			// Desenlazar a default
 			glBindVertexArray(0);
 		}
+		
 	
-	}
-
-	void deallocate(){
-		// desasignar los recursos que ya no necesitaremos
-		glDeleteVertexArrays(1, &VAO);
-    	glDeleteBuffers(1, &VBO);
-
-		glDeleteVertexArrays(1, &bVAO);
-    	glDeleteBuffers(1, &bVBO);
 	}
 };

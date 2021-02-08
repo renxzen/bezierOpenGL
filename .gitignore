@@ -3,3 +3,5 @@ builds/*
 
 dependencies/*
 !dependencies/.gitkeep 
+
+test.exe

@@ -20,12 +20,8 @@ struct Factorials {
 
 		for (int i = 1; i <= 20; i++) {
 			for (int j = 1; j <= 20; j++) {
-				if (i < j) {
-					bin[i][j] = -1;
-					continue;
-				}
-
-				bin[i][j] = array[i]/(array[j]*array[i-j]);
+				if (i < j) bin[i][j] = -1;
+				else bin[i][j] = array[i]/(array[j]*array[i-j]);
 			}
 		}
 	}
